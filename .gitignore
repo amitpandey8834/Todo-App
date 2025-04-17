@@ -1,0 +1,5 @@
+# Ignore node_modules and env files
+Todo-Frontend/node_modules/
+Todo-Frontend/.env
+Todo-Backend/node_modules/
+Todo-Backend/.env
