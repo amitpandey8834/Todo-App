@@ -1,6 +1,7 @@
 ---
 - name: Provision EC2 and configure web server
   hosts: localhost
-  roles:
-    - role: ec2_launch
-      path: ./Ansible/Playbooks/roles/ec2_launch  # Specify the role path here
+  tasks:
+    - name: Import ec2_launch role
+      import_role:
+        name: ec2_launch
