@@ -1,9 +1,23 @@
-- name: Clone the Todo-App repository
+- name: Ensure the /opt directory exists
   become: yes
-  git:
-    repo: "https://github.com/amitpandey8834/Todo-App.git"  # Replace with your actual GitHub repo URL
+  file:
+    path: /opt
+    state: directory
+    mode: '0755'
+
+- name: Remove old todo-app directory if it exists
+  become: yes
+  file:
+    path: /opt/todo-app
+    state: absent
+
+- name: Clone the Todo-App repository cleanly
+  become: yes
+  ansible.builtin.git:
+    repo: "https://github.com/amitpandey8834/Todo-App.git"
     dest: /opt/todo-app
-    version: main  # You can specify a branch here if needed, e.g., 'main' or 'master'
+    version: main
+    force: yes
 
 - name: Install backend dependencies
   become: yes
