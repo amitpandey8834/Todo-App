@@ -1,8 +1,12 @@
 ---
-- name: Provision Ec2 instance & install XX
+- name: Provision EC2 instance & install XX
   hosts: localhost
   gather_facts: no
   roles:
     - ec2_launch
 
-    
+- name: Configuration of EC2 instances
+  hosts: launched_ec2_instances
+  gather_facts: yes
+  roles:
+    - common

@@ -1,2 +1,42 @@
----
-# tasks file for common
+- name: Install common Packages
+  become: yes
+  package:
+    name:
+      - httpd
+      - nodejs
+      - npm
+    state: present
+
+- name: Start and enable Apache
+  become: yes
+  service:
+    name: httpd
+    state: started
+    enabled: yes
+
+- name: Copy Source Code
+  become: yes
+  synchronize:
+    src: "{{ playbook_dir }}/../../"
+    dest: "/opt/todo-app"
+    delete: yes
+    recursive: yes
+    rsync_opts:
+      - "--exclude=.git"
+      - "--exclude=.github"
+      - "--exclude=ansible"
+
+- name: Wait for EC2 instance to start (if applicable)
+  wait_for:
+    port: 22
+    delay: 30
+    timeout: 300
+    state: started
+  when: ec2.instances is defined and ec2.instances | length > 0
+
+- name: Add the EC2 instance to the inventory dynamically
+  add_host:
+    name: "{{ item.public_ip }}"
+    groups: launched
+  loop: "{{ ec2.instances }}"
+  when: ec2.instances is defined and ec2.instances | length > 0
