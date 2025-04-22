@@ -5,6 +5,7 @@
       - httpd
       - nodejs
       - npm
+      - git
     state: present
 
 - name: Start and enable Apache
