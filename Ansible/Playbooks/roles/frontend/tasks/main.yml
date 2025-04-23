@@ -1,16 +1,19 @@
 ---
-- name: Ensure /opt/todo-app directory exists
+- name: Ensure /opt/Todo-app directory exists
+  become: yes
   file:
     path: /opt/Todo-app
     state: directory
     mode: '0755'
 
 - name: Remove old frontend directory if it exists
+  become: yes
   file:
     path: /opt/Todo-app/Todo-Frontend
     state: absent
 
 - name: Copy the frontend source code to EC2
+  become: yes
   copy:
     src: ../Todo-Frontend/
     dest: /opt/Todo-app/Todo-Frontend
