@@ -1,13 +1,31 @@
 ---
+- name: Ensure /opt/todo-app directory exists
+  file:
+    path: /opt/Todo-app
+    state: directory
+    mode: '0755'
+
+- name: Remove old frontend directory if it exists
+  file:
+    path: /opt/Todo-app/Todo-Frontend
+    state: absent
+
+- name: Copy the frontend source code to EC2
+  copy:
+    src: ../Todo-Frontend/
+    dest: /opt/Todo-app/Todo-Frontend
+    owner: root
+    group: root
+    mode: '0755'
+
 - name: Install frontend dependencies
   become: yes
   npm:
-    path: /opt/todo-app/todo-frontend
+    path: /opt/Todo-app/Todo-Frontend
     state: present
 
 - name: Build frontend
   become: yes
   command: npm run build
   args:
-    chdir: /opt/todo-app/todo-frontend
-  
+    chdir: /opt/Todo-app/Todo-Frontend
