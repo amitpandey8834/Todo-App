@@ -1,12 +1,13 @@
-- name: Install common Packages
+- name: Install common packages
   become: yes
   package:
-    name:
-      - httpd
-      - nodejs
-      - npm
-      - git
+    name: "{{ item.pk_name }}"
     state: present
+  with_items:
+    - { pk_name: httpd }
+    - { pk_name: nodejs }
+    - { pk_name: npm }
+    - { pk_name: git }
 
 - name: Start and enable Apache
   become: yes
